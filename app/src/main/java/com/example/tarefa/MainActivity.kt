@@ -17,36 +17,78 @@ class MainActivity : AppCompatActivity() {
 
         botao()
 
-        }
+    }
 
     fun checagem() {
-        var tt = edt_texto.text
+
+        //equals ==
+        // tentar converter o tipo, e em seguide verificar se este tipo confere com algum tipo esperado
+        val editValor = edt_texto.text.toString()
+
+        val retornoChecagemInteiro = testaInteiro(editValor)
+        val retornoChecagemString = testaString(editValor)
+        val retornoChecagemBoolean = testaBoolean(editValor)
+
         when{
-            edt_texto.text.toString() == "" ->  mostrarMensagem("este campo está vazio")
-            edt_texto.text.equals(tt) -> mostrarMensagem("É do tipo String")
+            retornoChecagemInteiro -> {
+                mostrarMensagem("Não é um valor string")
+                mostrarMensagem("Não é um valor Booleano")
+                mostrarMensagem("É um valor inteiro")
+            }
+            retornoChecagemString -> {
+                mostrarMensagem("Não é um valor inteiro")
+                mostrarMensagem("Não é um valor Booleano")
+                mostrarMensagem("É um valor string")
+            }
+            retornoChecagemBoolean -> {
+                mostrarMensagem("Não é um valor inteiro")
+                mostrarMensagem("Não é um valor string")
+                mostrarMensagem("É um valor Booleano")
+            }
+            else -> {
+                mostrarMensagem("Valor Desconhecido")
+            }
+        }
+
+    }
+    private fun testaInteiro(edt: String): Boolean{
+        return try {
+            val valorConvertido = edt.toInt()
+            true
+        }catch (e: Exception){
+            false
         }
     }
-//
-//    fun variaveis(){
-//        var vazio = ""
-//        var nulo = null
-//        var emBranco = vazio.isBlank()
-//        if(edt_texto.text.toString().equals(vazio)){
-//            mostrarMensagem("este campo está vazio")
-//        }else{
-//            if(edt_texto.text.toString().equals(nulo)){
-//                mostrarMensagem("este campo é nulo")
-//            }else{
-//                if (edt_texto.text.toString().equals(emBranco)){
-//                    mostrarMensagem("este campo está em branco")
-//                }
-//            }
-//        }
-//    }
+
+    private fun testaString(edt: String): Boolean{
+        return edt.startsWith("\"") && edt.endsWith("\"")
+    }
+
+    private fun testaBoolean(edt: String): Boolean{
+        return try {
+            val stringToBoolean = edt.toBooleanStrict()
+            true
+        }catch (e: Exception){
+            false
+        }
+    }
 
     fun botao(){
         button_verificar.setOnClickListener(){
-            checagem()
+            tarefa2(edt_texto.text.toString())
+        }
+    }
+
+    //identificar em uma variavel a diferença entre vazio, null, e em branco e mostrar em uma mensagem
+    // diferença vazio e embranco, vazio = "" e em branco "    "
+    private fun tarefa2(edt: String? = null) {
+
+        if (edt != null) {
+            when{
+                edt.isEmpty() -> mostrarMensagem("o campo está vazio")
+                edt.isBlank() -> mostrarMensagem("o campo está em branco")
+                else -> checagem()
+            }
         }
     }
 
